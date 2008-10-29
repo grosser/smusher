@@ -2,18 +2,22 @@ require 'rubygems'
 require 'rake'
 require 'lib/smusher'
 
+
 desc 'Default: run spec.'
 task :default => :smush
 
+
 desc "Smush em"
 task :smush do
+  #load vars + check sanity
   file = ENV['FILE'].to_s.strip
   folder = ENV['FOLDER'].to_s.strip
   url = ENV['URL'].to_s.strip
   if (file=='' and folder=='') or url==''
     raise "rake FILE=xxx.jpg URL=www.x.com/xxx.jpg OR rake FOLDER=images URL=www.x.com/"
   end
-  if file != '' and File.
+  
+  if file != ''
     Smusher.new.store_smushed_image(url,file)
   elsif folder != '' and File.directory?(folder)
     Smusher.new.store_smushed_folder(url,folder)
@@ -21,6 +25,7 @@ task :smush do
     raise
   end
 end
+
 
 desc "Run all specs in spec directory"
 task :spec do |t|
