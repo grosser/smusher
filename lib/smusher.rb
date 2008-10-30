@@ -3,7 +3,8 @@ require 'rake'
 
 class Smusher
   #http://smushit.com/ws.php?img=http%3A%2F%2Fwww.famfamfam.com%2Flab%2Ficons%2Fsilk%2Ficons%2Fdrink_empty.png&task=89266837334214400&id=paste2
-  SMUSHIT_FAILURE_SIZE = 9667  
+  SMUSHIT_FAILURE_SIZE = 9667
+  EMPTY_FILE_SIZE = 4
   
   def store_smushed_image(url,file)
     url = sanitize_url(url)
@@ -52,20 +53,26 @@ private
   end
   
   def with_protection(file)
-    return yield unless File.exist?(file)
-    
-    backup = "#{file}.backup"
-    FileUtils.cp(file,backup)#backup
-    
-    before = size(file)
-    yield
-    after = size(file)
-    
-    if after == SMUSHIT_FAILURE_SIZE or after > before
-      FileUtils.mv(backup,file,:force=>true)#revert
-      puts "reverted!"
-    else
-      FileUtils.rm(backup)
+    if File.exist?(file)
+      backup = "#{file}.backup"
+      FileUtils.cp(file,backup)#backup
+      
+      before = size(file)
+      yield
+      after = size(file)
+      
+      if after == EMPTY_FILE_SIZE or after == SMUSHIT_FAILURE_SIZE or after > before
+        FileUtils.mv(backup,file,:force=>true)#revert
+        puts "reverted!"
+      else
+        FileUtils.rm(backup)
+      end
+    else#is created
+      yield
+      after = size(file) 
+      if after == SMUSHIT_FAILURE_SIZE or after == EMPTY_FILE_SIZE
+        FileUtils.rm file
+      end
     end
   end
   
@@ -77,7 +84,7 @@ private
     puts "sushing #{url} -> #{file}"
     
     before = size(file)
-    yield(file)
+    yield
     after = size(file)
     
     result = before == 0 ?  "CREATED" : "#{(100*after)/before}%"
