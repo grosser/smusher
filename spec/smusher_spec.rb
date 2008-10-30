@@ -5,21 +5,51 @@ URL = "http://famfamfam.com/lab/icons/silk/icons/drink_empty.png"
 ESCAPED_URL = "http%3A%2F%2Fwww.famfamfam.com%2Flab%2Ficons%2Fsilk%2Ficons%2Fdrink_empty.png"
 
 describe :smusher do
+  def size
+    File.size(@file)
+  end
+  
   before do
+    #prepare output folder
+    @out = File.join(ROOT,'out')
+    FileUtils.rm_r @out, :force=>true
+    FileUtils.mkdir @out
+    FileUtils.cp(File.join(ROOT,'images','people.jpg'), @out)
+    
+    @file = File.join(@out,'people.jpg')
     @s = Smusher.new
-    @file = File.join(ROOT,'out','fam.png')
   end
   
   describe :store_smushed_image do
     it "stores the image in an reduced size" do
-      original_size = 433
+      original_size = size
       @s.store_smushed_image(URL,@file)
-      File.size(@file).should < original_size
+      size.should < original_size
     end
     
     it "uses cleaned url" do
       @s.expects(:write_smushed_data).with("http://xx",@file)
       @s.store_smushed_image('xx',@file)
+    end
+  end
+  
+  describe :store_smushed_folder do
+    before do
+      FileUtils.rm @file
+      @files = []
+      %w[add.png drink_empty.png].each do |name|
+        file = File.join(ROOT,'images',name)
+        @files << File.join(@out,name) 
+        FileUtils.cp file, @out
+      end
+      @before = @files.map {|f|File.size(f)} 
+    end
+    
+    it "smushes all images" do
+      @s.store_smushed_folder(File.dirname(URL),@out)
+      new_sizes = @files.map {|f|File.size(f)}
+      puts new_sizes * ' x '
+      new_sizes.size.times {|i| new_sizes[i].should < @before[i]}
     end
   end
   
@@ -46,7 +76,7 @@ describe :smusher do
   describe :images_in_folder do
     it "finds all non-gif images" do
       folder = File.join(ROOT,'images')
-      all = %w[book.png people.jpg water.JPG woman.jpeg].map{|name|"#{folder}/#{name}"}
+      all = %w[add.png drink_empty.png people.jpg water.JPG woman.jpeg].map{|name|"#{folder}/#{name}"}
       result = @s.send(:images_in_folder,folder)
       (all+result).uniq.size.should == all.size
     end
@@ -57,10 +87,6 @@ describe :smusher do
   end
   
   describe :with_protection do
-    def size
-      File.size(@file)
-    end
-    
     def failure_data 
       'x' * (Smusher::SMUSHIT_FAILURE_SIZE-1)
     end
@@ -74,8 +100,6 @@ describe :smusher do
     end
     
     before do
-      @file = File.join(ROOT,'out','people.jpg')
-      copy
       @before = size
       @before.should_not == 0
     end
