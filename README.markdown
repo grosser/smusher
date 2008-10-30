@@ -1,3 +1,10 @@
+Install
+=======
+
+    sudo gem install rake json
+    git clone git://github.com/grosser/smusher.git
+
+
 Syntax
 ======
 
@@ -20,4 +27,5 @@ or is empty will be reverted.
 
 TODO
 ====
+ - no need for files to be online (direct upload)
  - windows support anyone ?
