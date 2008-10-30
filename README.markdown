@@ -14,7 +14,7 @@ Syntax
 
     #Smush all images in a folder
     rake URL=url_of_image_root FOLDER=folder
-    rake URL=www.x.com/images FOLDER=public/images
+    rake URL=www.x.com/images FOLDER=/my_app/public/images
 
 
 Protection
