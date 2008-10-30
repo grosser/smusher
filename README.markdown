@@ -13,6 +13,11 @@ Syntax
 Protection
 ==========
 
-smush makes .backup copies of any image before smushing.
-Any image that returns a failure code, or is larger than before
-will be reverted.
+Smusher makes .backup copies of any image before smushing.
+Any image that returns a failure code, is larger than before,
+or is empty will be reverted.
+
+
+TODO
+====
+ - windows support anyone ?
