@@ -22,12 +22,13 @@ Usage
 
 Protection
 ==========
-Smusher makes .backup copies of any image before optimizing.
-Any image that returns a failure code, is larger than before,
+Smusher makes .backup copies of any image before optimizing.  
+Any image that returns a failure code, is larger than before,  
 or is empty will be reverted.
 
 Example
 ======
+
   smusher /apps/ts/public/images xx.com/images
   sushing http://xx.com/images/social/facebook_icon.png -> /apps/rs/public/images/social/facebook_icon.png
   2887 -> 132                              = 4%
