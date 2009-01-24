@@ -28,18 +28,17 @@ or is empty will be reverted.
 
 Example
 ======
+    smusher /apps/ts/public/images xx.com/images
+    sushing http://xx.com/images/social/facebook_icon.png -> /apps/rs/public/images/social/facebook_icon.png
+    2887 -> 132                              = 4%
 
-  smusher /apps/ts/public/images xx.com/images
-  sushing http://xx.com/images/social/facebook_icon.png -> /apps/rs/public/images/social/facebook_icon.png
-  2887 -> 132                              = 4%
+    sushing http://xx.com/images/social/myspace_icon.png -> /apps/rs/public/images/social/myspace_icon.png
+    3136 -> 282                              = 8%
 
-  sushing http://xx.com/images/social/myspace_icon.png -> /apps/rs/public/images/social/myspace_icon.png
-  3136 -> 282                              = 8%
-
-  sushing http://xx.com/images/dvd/dvd_1.png -> /apps/rs/public/images/dvd/dvd_1.png
-  5045 -> 9677                             = 191%
-  reverted!
-  ...
+    sushing http://xx.com/images/dvd/dvd_1.png -> /apps/rs/public/images/dvd/dvd_1.png
+    5045 -> 9677                             = 191%
+    reverted!
+    ...
 
 TODO
 ====
