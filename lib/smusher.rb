@@ -1,7 +1,8 @@
 require 'rubygems'
 require 'rake'
 
-class Smusher
+module Smusher
+  extend self
   #http://smushit.com/ws.php?img=http%3A%2F%2Fwww.famfamfam.com%2Flab%2Ficons%2Fsilk%2Ficons%2Fdrink_empty.png&task=89266837334214400&id=paste2
   SMUSHIT_FAILURE_SIZE = 9667
   EMPTY_FILE_SIZE = 4

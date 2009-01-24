@@ -17,19 +17,18 @@ describe :smusher do
     FileUtils.cp(File.join(ROOT,'images','people.jpg'), @out)
     
     @file = File.join(@out,'people.jpg')
-    @s = Smusher.new
   end
   
   describe :store_smushed_image do
     it "stores the image in an reduced size" do
       original_size = size
-      @s.store_smushed_image(URL,@file)
+      Smusher.store_smushed_image(URL,@file)
       size.should < original_size
     end
     
     it "uses cleaned url" do
-      @s.expects(:write_smushed_data).with("http://xx",@file)
-      @s.store_smushed_image('xx',@file)
+      Smusher.expects(:write_smushed_data).with("http://xx",@file)
+      Smusher.store_smushed_image('xx',@file)
     end
   end
   
@@ -46,7 +45,7 @@ describe :smusher do
     end
     
     it "smushes all images" do
-      @s.store_smushed_folder(File.dirname(URL),@out)
+      Smusher.store_smushed_folder(File.dirname(URL),@out)
       new_sizes = @files.map {|f|File.size(f)}
       puts new_sizes * ' x '
       new_sizes.size.times {|i| new_sizes[i].should < @before[i]}
@@ -55,21 +54,21 @@ describe :smusher do
   
   describe :sanitize_url do
     it "cleans a url" do
-      @s.send(:sanitize_url,'xx').should == "http://xx" 
+      Smusher.send(:sanitize_url,'xx').should == "http://xx"
     end
     
     it "does not cleans a url if it contains a protocol" do
-      @s.send(:sanitize_url,'ftp://xx').should == "ftp://xx" 
+      Smusher.send(:sanitize_url,'ftp://xx').should == "ftp://xx"
     end
   end
   
   describe :sanitize_folder do
     it "cleans a folders trailing slash" do
-      @s.send(:sanitize_folder,"xx/").should == 'xx'
+      Smusher.send(:sanitize_folder,"xx/").should == 'xx'
     end
     
     it "does not clean if there is no trailing slash" do
-      @s.send(:sanitize_folder,"/x/ccx").should == '/x/ccx'
+      Smusher.send(:sanitize_folder,"/x/ccx").should == '/x/ccx'
     end
   end
   
@@ -77,12 +76,12 @@ describe :smusher do
     it "finds all non-gif images" do
       folder = File.join(ROOT,'images')
       all = %w[add.png drink_empty.png people.jpg water.JPG woman.jpeg].map{|name|"#{folder}/#{name}"}
-      result = @s.send(:images_in_folder,folder)
+      result = Smusher.send(:images_in_folder,folder)
       (all+result).uniq.size.should == all.size
     end
     
     it "finds nothing if folder is empty" do
-      @s.send(:images_in_folder,File.join(ROOT,'empty')).should == []
+      Smusher.send(:images_in_folder,File.join(ROOT,'empty')).should == []
     end
   end
   
@@ -105,7 +104,7 @@ describe :smusher do
     end
     
     it "reverts a file that got larger" do
-      @s.send(:with_protection,@file) do
+      Smusher.send(:with_protection,@file) do
         write(File.open(@file).read + 'x')
         @before.should_not == size
       end
@@ -115,14 +114,14 @@ describe :smusher do
     it "does not revert a file that got created" do
       FileUtils.rm @file
       File.exist?(@file).should be_false
-      @s.send(:with_protection,@file) do
+      Smusher.send(:with_protection,@file) do
         copy
       end
       File.exist?(@file).should be_true
     end
     
     it "reverts a file that got empty" do
-      @s.send(:with_protection,@file) do
+      Smusher.send(:with_protection,@file) do
         write nil
         size.should == Smusher::EMPTY_FILE_SIZE
       end
@@ -136,7 +135,7 @@ describe :smusher do
       @before.should > Smusher::SMUSHIT_FAILURE_SIZE
       
       #gets overwritten by failure data size
-      @s.send(:with_protection,@file) do
+      Smusher.send(:with_protection,@file) do
         write failure_data
         size.should == Smusher::SMUSHIT_FAILURE_SIZE
       end
@@ -148,7 +147,7 @@ describe :smusher do
 
     it "reverts a file that got created and has error suggesting size" do
       FileUtils.rm @file
-      @s.send(:with_protection,@file) do
+      Smusher.send(:with_protection,@file) do
         write failure_data
         File.exist?(@file).should be_true
       end
@@ -158,18 +157,18 @@ describe :smusher do
   
   describe :size do
     it "find the size of a file" do
-      @s.send(:size,@file).should == File.size(@file) 
+      Smusher.send(:size,@file).should == File.size(@file)
     end
     
     it "returns 0 for missing file" do
-      @s.send(:size,File.join(ROOT,'xxxx','dssdfsddfs')).should == 0
+      Smusher.send(:size,File.join(ROOT,'xxxx','dssdfsddfs')).should == 0
     end
   end
   
   describe :logging do
     it "yields" do
       val = 0
-      @s.send(:with_logging,URL,@file) {val = 1}
+      Smusher.send(:with_logging,URL,@file) {val = 1}
       val.should == 1
     end
   end
@@ -177,9 +176,8 @@ describe :smusher do
   describe :smushed_image_data_for do
     it "loads the reduced image" do
       expected_result = File.join(ROOT,'reduced','fam.png')
-      received = (@s.send(:smushed_image_data_for,URL)+"\n") 
+      received = (Smusher.send(:smushed_image_data_for,URL)+"\n")
       received.should == File.open(expected_result).read
     end
   end
 end
-
