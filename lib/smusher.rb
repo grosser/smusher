@@ -8,7 +8,10 @@ module Smusher
 
   # optimize the given image !!coverts gif to png!!
   def optimize_image(file)
-    raise if empty?(file)
+    if empty?(file)
+      puts "THIS FILE IS EMPTY!!! #{file}"
+      return
+    end
     with_protection(file) do
       with_logging(file) do
         write_optimized_data(file)
@@ -71,7 +74,7 @@ private
     yield
     after = size(file)
     
-    result = (before == 0 ?  "CREATED" : "#{(100*after)/before}%")
+    result = "#{(100*after)/before}%"
     puts "#{before} -> #{after}".ljust(40) + " = #{result}"
   end
 
