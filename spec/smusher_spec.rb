@@ -1,9 +1,6 @@
 ROOT = File.expand_path(File.dirname(__FILE__))
 require File.join(ROOT,"spec_helper")
 
-URL = "http://famfamfam.com/lab/icons/silk/icons/drink_empty.png"
-ESCAPED_URL = "http%3A%2F%2Fwww.famfamfam.com%2Flab%2Ficons%2Fsilk%2Ficons%2Fdrink_empty.png"
-
 describe :smusher do
   def size
     File.size(@file)
@@ -22,13 +19,8 @@ describe :smusher do
   describe :store_smushed_image do
     it "stores the image in an reduced size" do
       original_size = size
-      Smusher.store_smushed_image(URL,@file)
+      Smusher.store_smushed_image(@file)
       size.should < original_size
-    end
-    
-    it "uses cleaned url" do
-      Smusher.expects(:write_smushed_data).with("http://xx",@file)
-      Smusher.store_smushed_image('xx',@file)
     end
   end
   
@@ -45,20 +37,10 @@ describe :smusher do
     end
     
     it "smushes all images" do
-      Smusher.store_smushed_folder(File.dirname(URL),@out)
+      Smusher.store_smushed_folder(@out)
       new_sizes = @files.map {|f|File.size(f)}
       puts new_sizes * ' x '
       new_sizes.size.times {|i| new_sizes[i].should < @before[i]}
-    end
-  end
-  
-  describe :sanitize_url do
-    it "cleans a url" do
-      Smusher.send(:sanitize_url,'xx').should == "http://xx"
-    end
-    
-    it "does not cleans a url if it contains a protocol" do
-      Smusher.send(:sanitize_url,'ftp://xx').should == "ftp://xx"
     end
   end
   
@@ -111,15 +93,6 @@ describe :smusher do
       @before.should == size
     end
     
-    it "does not revert a file that got created" do
-      FileUtils.rm @file
-      File.exist?(@file).should be_false
-      Smusher.send(:with_protection,@file) do
-        copy
-      end
-      File.exist?(@file).should be_true
-    end
-    
     it "reverts a file that got empty" do
       Smusher.send(:with_protection,@file) do
         write nil
@@ -129,29 +102,19 @@ describe :smusher do
     end
     
     it "reverts a file that has error-suggesting size" do
-      #a file larger that failure data
-      write(failure_data+failure_data)
+      write("valid-file-contents")
       @before = size
-      @before.should > Smusher::SMUSHIT_FAILURE_SIZE
+      @before.should > Smusher::EMPTY_FILE_SIZE
       
       #gets overwritten by failure data size
       Smusher.send(:with_protection,@file) do
-        write failure_data
-        size.should == Smusher::SMUSHIT_FAILURE_SIZE
+        write nil
+        size.should == Smusher::EMPTY_FILE_SIZE
       end
       
       #and should be reverted
-      size.should_not == Smusher::SMUSHIT_FAILURE_SIZE
+      size.should_not == Smusher::EMPTY_FILE_SIZE
       size.should == @before
-    end
-
-    it "reverts a file that got created and has error suggesting size" do
-      FileUtils.rm @file
-      Smusher.send(:with_protection,@file) do
-        write failure_data
-        File.exist?(@file).should be_true
-      end
-      File.exist?(@file).should be_false
     end
   end
   
@@ -168,16 +131,17 @@ describe :smusher do
   describe :logging do
     it "yields" do
       val = 0
-      Smusher.send(:with_logging,URL,@file) {val = 1}
+      Smusher.send(:with_logging,@file) {val = 1}
       val.should == 1
     end
   end
   
   describe :smushed_image_data_for do
     it "loads the reduced image" do
-      expected_result = File.join(ROOT,'reduced','fam.png')
-      received = (Smusher.send(:smushed_image_data_for,URL)+"\n")
-      received.should == File.open(expected_result).read
+      original = File.join(ROOT,'images','add.png')
+      reduced = File.open(File.join(ROOT,'reduced','add.png')).read
+      received = (Smusher.send(:smushed_image_data_for,original))
+      received.should == reduced
     end
   end
 end

@@ -11,14 +11,12 @@ Solution
 
 Install
 =======
-    install ruby + rubygems
+    install ruby + rubygems + curl
     sudo gem install grosser-smusher --source http://gems.github.com/
 
 Usage
 =====
-    # your pictures MUST be online in order to be optimized
-    smusher /apps/x/public/images www.x.com/images
-    smusher LOCAL_FOLDER REMOTE_FOLDER
+    smusher /apps/x/public/images
 
 Protection
 ==========
@@ -28,21 +26,21 @@ or is empty will be reverted.
 
 Example
 ======
-    smusher /apps/ts/public/images xx.com/images
-    sushing http://xx.com/images/social/facebook_icon.png -> /apps/rs/public/images/social/facebook_icon.png
+    smusher /apps/ts/public/images
+    sushing /apps/rs/public/images/social/facebook_icon.png
     2887 -> 132                              = 4%
 
-    sushing http://xx.com/images/social/myspace_icon.png -> /apps/rs/public/images/social/myspace_icon.png
+    sushing /apps/rs/public/images/social/myspace_icon.png
     3136 -> 282                              = 8%
 
-    sushing http://xx.com/images/dvd/dvd_1.png -> /apps/rs/public/images/dvd/dvd_1.png
+    sushing /apps/rs/public/images/dvd/dvd_1.png
     5045 -> 9677                             = 191%
     reverted!
     ...
 
 TODO
 ====
- - no need for files to be online (direct upload)
+ - use rest-client rather than curl
  - windows support?
 
 Author

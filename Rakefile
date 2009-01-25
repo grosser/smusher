@@ -1,5 +1,5 @@
 desc "Run all specs in spec directory"
-task :default do |t|
+task :test do |t|
   require 'spec'
   options = "--colour --format progress --loadby --reverse"
   files = FileList['spec/**/*_spec.rb']
@@ -9,7 +9,7 @@ end
 #Gemspec
 require 'echoe'
 porject_name = 'smusher'
-Echoe.new(porject_name , '0.1') do |p|
+Echoe.new(porject_name , '0.3') do |p|
   p.description    = "Automatic Lossless Reduction Of All Your Images"
   p.url            = "http://github.com/grosser/#{porject_name}"
   p.author         = "Michael Grosser"

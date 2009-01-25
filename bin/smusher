@@ -2,11 +2,15 @@
 require 'rubygems'
 require 'smusher'
 
-folder, url = ARGV
-if ARGV.length < 2 or not File.directory?(folder)
-  puts "smusher DIRECTORY_TO_SMUSH BASE_URL"
-  puts "smusher /apps/x/public/images www.x.com/images"
+path = ARGV[0]
+if ARGV.length != 1 or not File.exist?(path)
+  puts "smusher DIRECTORY_OR_FILE_TO_OPTIMIZE"
+  puts "smusher /apps/x/public/images"
   exit
 end
 
-Smusher.store_smushed_folder(url,folder)
+if File.directory?(path)
+  Smusher.store_smushed_folder(path)
+else
+  Smusher.store_smushed_image(path)
+end
