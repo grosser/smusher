@@ -16,15 +16,15 @@ describe :smusher do
     @file = File.join(@out,'people.jpg')
   end
   
-  describe :store_smushed_image do
+  describe :optimize_image do
     it "stores the image in an reduced size" do
       original_size = size
-      Smusher.store_smushed_image(@file)
+      Smusher.optimize_image(@file)
       size.should < original_size
     end
   end
   
-  describe :store_smushed_folder do
+  describe :optimize_images_in_folder do
     before do
       FileUtils.rm @file
       @files = []
@@ -37,7 +37,7 @@ describe :smusher do
     end
     
     it "smushes all images" do
-      Smusher.store_smushed_folder(@out)
+      Smusher.optimize_images_in_folder(@out)
       new_sizes = @files.map {|f|File.size(f)}
       puts new_sizes * ' x '
       new_sizes.size.times {|i| new_sizes[i].should < @before[i]}
@@ -136,11 +136,11 @@ describe :smusher do
     end
   end
   
-  describe :smushed_image_data_for do
+  describe :optimized_image_data_for do
     it "loads the reduced image" do
       original = File.join(ROOT,'images','add.png')
       reduced = File.open(File.join(ROOT,'reduced','add.png')).read
-      received = (Smusher.send(:smushed_image_data_for,original))
+      received = (Smusher.send(:optimized_image_data_for,original))
       received.should == reduced
     end
   end

@@ -5,27 +5,29 @@ require 'json'
 module Smusher
   extend self
   EMPTY_FILE_SIZE = 4
-  
-  def store_smushed_image(file)
-    raise if size(file) <= EMPTY_FILE_SIZE
+
+  # optimize the given image !!coverts gif to png!!
+  def optimize_image(file)
+    raise if empty?(file)
     with_protection(file) do
       with_logging(file) do
-        write_smushed_data(file)
+        write_optimized_data(file)
       end
     end
   end
 
-  def store_smushed_folder(folder)
+  # fetch all jpg/png images from  given folder and optimize them
+  def optimize_images_in_folder(folder)
     images_in_folder(folder).each do |file|
-      store_smushed_image(file)
+      optimize_image(file)
       puts ''
     end
   end
 
 private
 
-  def write_smushed_data(file)
-    data = smushed_image_data_for(file)
+  def write_optimized_data(file)
+    data = optimized_image_data_for(file)
     File.open(file,'w') {|f| f.puts data}
   end
   
@@ -45,9 +47,8 @@ private
 
     before = size(file)
     yield
-    after = size(file)
 
-    if after <= EMPTY_FILE_SIZE or after >= before
+    if empty?(file) or size(file) >= before
       FileUtils.mv(backup,file,:force=>true)#revert
       puts "reverted!"
     else
@@ -59,21 +60,26 @@ private
     File.exist?(file) ? File.size(file) : 0
   end
 
+  def empty?(file)
+    size(file) <= EMPTY_FILE_SIZE
+  end
+
   def with_logging(file)
     puts "sushing #{file}"
+    
     before = size(file)
     yield
     after = size(file)
     
-    result = before == 0 ?  "CREATED" : "#{(100*after)/before}%"
+    result = (before == 0 ?  "CREATED" : "#{(100*after)/before}%")
     puts "#{before} -> #{after}".ljust(40) + " = #{result}"
   end
 
-  def smushed_image_data_for(file)
-    data = `curl -F files[]=@#{file} http://smush.it/ws.php -s`
-    return nil if data['error']
-    path = "/#{JSON.parse(data)['dest']}"
+  def optimized_image_data_for(file)
     #TODO use rest-client --> independent of curl
-    data = `curl http://smush.it#{path} -s`
+    response = `curl -F files[]=@#{file} http://smush.it/ws.php -s`
+    return nil if response['error']
+    path = JSON.parse(response)['dest']
+    `curl http://smush.it/#{path} -s`
   end
 end

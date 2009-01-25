@@ -10,7 +10,7 @@ if ARGV.length != 1 or not File.exist?(path)
 end
 
 if File.directory?(path)
-  Smusher.store_smushed_folder(path)
+  Smusher.optimize_images_in_folder(path)
 else
-  Smusher.store_smushed_image(path)
+  Smusher.optimize_image(path)
 end

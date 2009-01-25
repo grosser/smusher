@@ -16,7 +16,9 @@ Install
 
 Usage
 =====
-    smusher /apps/x/public/images
+    smusher /apps/x/public/images # optimize all jpg/png images, NOT gifs
+    smusher /apps/x/public/images/x.png # optimize a single image
+    smusher /apps/x/public/images/x.gif # !!optimize to smaller png, rename it yourself!!
 
 Protection
 ==========
@@ -27,16 +29,16 @@ or is empty will be reverted.
 Example
 ======
     smusher /apps/ts/public/images
-    sushing /apps/rs/public/images/social/facebook_icon.png
-    2887 -> 132                              = 4%
+      sushing /apps/rs/public/images/social/facebook_icon.png
+      2887 -> 132                              = 4%
 
-    sushing /apps/rs/public/images/social/myspace_icon.png
-    3136 -> 282                              = 8%
+      sushing /apps/rs/public/images/social/myspace_icon.png
+      3136 -> 282                              = 8%
 
-    sushing /apps/rs/public/images/dvd/dvd_1.png
-    5045 -> 9677                             = 191%
-    reverted!
-    ...
+      sushing /apps/rs/public/images/dvd/dvd_1.png
+      5045 -> 4                                = 0%
+      reverted!
+      ...
 
 TODO
 ====
