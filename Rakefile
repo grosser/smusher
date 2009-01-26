@@ -9,7 +9,7 @@ end
 #Gemspec
 require 'echoe'
 porject_name = 'smusher'
-Echoe.new(porject_name , '0.3') do |p|
+Echoe.new(porject_name , '0.3.1') do |p|
   p.description    = "Automatic Lossless Reduction Of All Your Images"
   p.url            = "http://github.com/grosser/#{porject_name}"
   p.author         = "Michael Grosser"

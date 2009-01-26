@@ -88,32 +88,12 @@ describe :smusher do
     it "reverts a file that got larger" do
       Smusher.send(:with_protection,@file) do
         write(File.open(@file).read + 'x')
-        @before.should_not == size
       end
       @before.should == size
     end
     
     it "reverts a file that got empty" do
-      Smusher.send(:with_protection,@file) do
-        write nil
-        size.should == Smusher::EMPTY_FILE_SIZE
-      end
-      size.should == @before
-    end
-    
-    it "reverts a file that has error-suggesting size" do
-      write("valid-file-contents")
-      @before = size
-      @before.should > Smusher::EMPTY_FILE_SIZE
-      
-      #gets overwritten by failure data size
-      Smusher.send(:with_protection,@file) do
-        write nil
-        size.should == Smusher::EMPTY_FILE_SIZE
-      end
-      
-      #and should be reverted
-      size.should_not == Smusher::EMPTY_FILE_SIZE
+      Smusher.send(:with_protection,@file){write nil}
       size.should == @before
     end
   end

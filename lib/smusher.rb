@@ -4,7 +4,6 @@ require 'json'
 
 module Smusher
   extend self
-  EMPTY_FILE_SIZE = 4
 
   # optimize the given image !!coverts gif to png!!
   def optimize_image(file)
@@ -31,7 +30,7 @@ private
 
   def write_optimized_data(file)
     data = optimized_image_data_for(file)
-    File.open(file,'w') {|f| f.puts data}
+    File.open(file,'w') {|f| f.puts data} unless data.nil?
   end
   
   def sanitize_folder(folder)
@@ -64,14 +63,14 @@ private
   end
 
   def empty?(file)
-    size(file) <= EMPTY_FILE_SIZE
+    size(file) <= 4 #empty file = 4kb
   end
 
   def with_logging(file)
     puts "sushing #{file}"
     
     before = size(file)
-    yield
+    begin; yield; rescue; puts $!; end
     after = size(file)
     
     result = "#{(100*after)/before}%"
@@ -80,9 +79,10 @@ private
 
   def optimized_image_data_for(file)
     #TODO use rest-client --> independent of curl
-    response = `curl -F files[]=@#{file} http://smush.it/ws.php -s`
-    return nil if response['error']
-    path = JSON.parse(response)['dest']
+    response = JSON.parse(`curl -F files[]=@#{file} http://smush.it/ws.php -s`)
+    raise "smush.it: #{response['error']}" if response['error']
+    path = response['dest']
+    raise "no dest path found" unless path
     `curl http://smush.it/#{path} -s`
   end
 end
