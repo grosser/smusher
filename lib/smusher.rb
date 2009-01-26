@@ -67,7 +67,7 @@ private
   end
 
   def with_logging(file)
-    puts "sushing #{file}"
+    puts "smushing #{file}"
     
     before = size(file)
     begin; yield; rescue; puts $!; end
