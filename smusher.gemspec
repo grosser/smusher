@@ -2,17 +2,17 @@
 
 Gem::Specification.new do |s|
   s.name = %q{smusher}
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2009-01-26}
+  s.date = %q{2009-01-27}
   s.default_executable = %q{smusher}
   s.description = %q{Automatic Lossless Reduction Of All Your Images}
   s.email = %q{grosser.michael@gmail.com}
   s.executables = ["smusher"]
   s.extra_rdoc_files = ["lib/smusher.rb", "bin/smusher", "README.markdown"]
-  s.files = ["Manifest", "nbproject/private/private.xml", "nbproject/private/rake-d.txt", "nbproject/project.xml", "nbproject/project.properties", "lib/smusher.rb", "spec/out/people.jpg", "spec/spec_helper.rb", "spec/smusher_spec.rb", "spec/images/logo.gif", "spec/images/woman.jpeg", "spec/images/add.png", "spec/images/drink_empty.png", "spec/images/people.jpg", "spec/images/water.JPG", "spec/reduced/fam.png", "spec/reduced/add.png", "ar.gif", "bin/smusher", "Rakefile", "README.markdown", "smusher.gemspec"]
+  s.files = ["Manifest", "lib/smusher.rb", "spec/out/people.jpg", "spec/spec_helper.rb", "spec/smusher_spec.rb", "spec/images/logo.gif", "spec/images/woman.jpeg", "spec/images/add.png", "spec/images/drink_empty.png", "spec/images/people.jpg", "spec/images/water.JPG", "spec/reduced/fam.png", "spec/reduced/add.png", "bin/smusher", "Rakefile", "README.markdown", "smusher.gemspec"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/grosser/smusher}
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Smusher", "--main", "README.markdown"]

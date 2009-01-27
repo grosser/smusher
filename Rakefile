@@ -8,12 +8,13 @@ end
 
 #Gemspec
 require 'echoe'
-porject_name = 'smusher'
-Echoe.new(porject_name , '0.3.1') do |p|
+project_name = 'smusher'
+Echoe.new(project_name , '0.3.2') do |p|
   p.description    = "Automatic Lossless Reduction Of All Your Images"
-  p.url            = "http://github.com/grosser/#{porject_name}"
+  p.url            = "http://github.com/grosser/#{project_name}"
   p.author         = "Michael Grosser"
   p.email          = "grosser.michael@gmail.com"
+  p.ignore_pattern = ["nbproject/*", "nbproject/*/*"]
   p.dependencies   = %w[rake json]
 end
 
