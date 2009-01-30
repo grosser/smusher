@@ -10,6 +10,7 @@ module Smusher
   # optimize the given image
   # converts gif to png, if size is lower
   def optimize_image(file,options={})
+    check_options(options)
     puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
     success = false
     
@@ -26,12 +27,20 @@ module Smusher
 
   # fetch all jpg/png images from  given folder and optimize them
   def optimize_images_in_folder(folder,options={})
-    images_in_folder(folder).each do |file|
+    check_options(options)
+    images_in_folder(folder,options[:convert_gifs]).each do |file|
       optimize_image(file)
     end
   end
 
 private
+
+  def check_options(options)
+    known_options = [:convert_gifs,:quiet]
+    if options.detect{|k,v| not known_options.include?(k)}
+      raise "Known options: #{known_options*' '}"
+    end
+  end
 
   def write_optimized_data(file)
     optimized = optimized_image_data_for(file)
@@ -47,9 +56,11 @@ private
     folder.sub(%r[/$],'')#remove tailing slash
   end
 
-  def images_in_folder(folder)
+  def images_in_folder(folder,with_gifs=false)
     folder = sanitize_folder(folder)
-    images = %w[png jpg jpeg JPG].map {|ext| "#{folder}/**/*.#{ext}"}
+    images = %w[png jpg jpeg JPG]
+    images << 'gif' if with_gifs
+    images.map! {|ext| "#{folder}/**/*.#{ext}"}
     FileList[*images]
   end
   

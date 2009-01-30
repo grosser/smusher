@@ -72,6 +72,10 @@ describe :smusher do
         $stdout.expects(:write).never
         Smusher.optimize_image(@file,:quiet=>true)
       end
+
+      it "raises when an unknown option was given" do
+        lambda{Smusher.optimize_image(@file,:q=>true)}.should raise_error
+      end
     end
   end
   
@@ -79,10 +83,9 @@ describe :smusher do
     before do
       FileUtils.rm @file
       @files = []
-      %w[add.png drink_empty.png].each do |name|
-        file = File.join(ROOT,'images',name)
-        @files << File.join(@out,name) 
-        FileUtils.cp file, @out
+      %w[add.png drink_empty.png].each do |image_name|
+        copy image_name
+        @files << File.join(@out,image_name)
       end
       @before = @files.map {|f|File.size(f)} 
     end
@@ -90,8 +93,19 @@ describe :smusher do
     it "optimizes all images" do
       Smusher.optimize_images_in_folder(@out)
       new_sizes = @files.map {|f|File.size(f)}
-      puts new_sizes * ' x '
       new_sizes.size.times {|i| new_sizes[i].should < @before[i]}
+    end
+
+    it "does not convert gifs" do
+      copy 'logo.gif'
+      Smusher.optimize_images_in_folder(@out)
+      File.exist?(File.join(@out,'logo.png')).should == false
+    end
+
+    it "converts gifs to png when option was given" do
+      copy 'logo.gif'
+      Smusher.optimize_images_in_folder(@out,:convert_gifs=>true)
+      File.exist?(File.join(@out,'logo.png')).should == true
     end
   end
   
