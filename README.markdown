@@ -7,7 +7,7 @@ Problem
 Solution
 ========
  - *LOSSLESS* size reduction (10-97% size reduction) in the cloud
- - optmizes all images(jpg+png) from a given folder
+ - optmizes all images(jpg+png+[gif]) from a given folder
 
 Install
 =======
@@ -18,9 +18,9 @@ Usage
 =====
 Optimize a single image or a whole folder in the cloud.
 
-gif`s:
- - called with a folder gif`s will not be optimized
- - called on a singe .gif, it will be optimized if it is optimizeable
+converting gif`s to png`s:
+ - called with a folder gif`s will not be converted
+ - called on a singe .gif, it will be converted if it is optimizeable
 
 Usage:
     smusher /apps/x/public/images [options]
@@ -52,8 +52,9 @@ Example
 
 TODO
 ====
- - use rest-client rather than curl
- - windows support?
+ - only optimize 'new' images -> save time when doing on each deploy
+ - use ruby library rather than curl
+ - support `smusher images/*.png` ?
 
 Author
 ======
