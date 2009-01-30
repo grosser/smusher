@@ -18,8 +18,9 @@ Usage
 =====
 Optimize a single image or a whole folder in the cloud.
 
-converting gif`s to png`s:
- - called with a folder gif`s will not be converted
+converting gif-s to png-s:
+
+ - called with a folder gif-s will not be converted
  - called on a singe .gif, it will be converted if it is optimizeable
 
 Usage:
