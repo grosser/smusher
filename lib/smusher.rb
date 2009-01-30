@@ -9,11 +9,11 @@ module Smusher
 
   # optimize the given image
   # converts gif to png, if size is lower
-  def optimize_image(file)
+  def optimize_image(file,options={})
     puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
     success = false
     
-    with_logging(file) do
+    with_logging(file,options[:quiet]) do
       write_optimized_data(file)
       success = true
     end
@@ -25,10 +25,9 @@ module Smusher
   end
 
   # fetch all jpg/png images from  given folder and optimize them
-  def optimize_images_in_folder(folder)
+  def optimize_images_in_folder(folder,options={})
     images_in_folder(folder).each do |file|
       optimize_image(file)
-      puts ''
     end
   end
 
@@ -58,15 +57,18 @@ private
     File.exist?(file) ? File.size(file) : 0
   end
 
-  def with_logging(file)
-    puts "smushing #{file}"
+  def with_logging(file,quiet)
+    puts "smushing #{file}" unless quiet
     
     before = size(file)
-    begin; yield; rescue; puts $!; end
+    begin; yield; rescue; puts $! unless quiet; end
     after = size(file)
     
-    result = "#{(100*after)/before}%"
-    puts "#{before} -> #{after}".ljust(40) + " = #{result}"
+    unless quiet
+      result = "#{(100*after)/before}%"
+      puts "#{before} -> #{after}".ljust(40) + " = #{result}"
+      puts ''
+    end
   end
 
   def optimized_image_data_for(file)

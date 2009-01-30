@@ -66,6 +66,13 @@ describe :smusher do
         File.exist?(@file_png).should == false
       end
     end
+  
+    describe 'options' do
+      it "does not produce output when :quiet is given" do
+        $stdout.expects(:write).never
+        Smusher.optimize_image(@file,:quiet=>true)
+      end
+    end
   end
   
   describe :optimize_images_in_folder do
@@ -124,7 +131,7 @@ describe :smusher do
   describe :logging do
     it "yields" do
       val = 0
-      Smusher.send(:with_logging,@file) {val = 1}
+      Smusher.send(:with_logging,@file,false) {val = 1}
       val.should == 1
     end
   end

@@ -16,9 +16,20 @@ Install
 
 Usage
 =====
-    smusher /apps/x/public/images # optimize all jpg/png images, NOT gifs
-    smusher /apps/x/public/images/x.png # optimize a single image
-    smusher /apps/x/public/images/x.gif # optimizes to smaller .png if this reduces size
+Optimize a single image or a whole folder in the cloud.
+
+gif`s:
+ - called with a folder gif`s will not be optimized
+ - called on a singe .gif, it will be optimized if it is optimizeable
+
+Usage:
+    smusher /apps/x/public/images [options]
+    smusher /apps/x/public/images/x.png [options]
+
+Options are:
+    -q, --quiet                      no output
+    -c, --convert-gifs               convert all .gif`s in the given folder
+
 
 Protection
 ==========

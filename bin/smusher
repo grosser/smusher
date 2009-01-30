@@ -1,16 +1,32 @@
 #!/usr/bin/env ruby
 require 'rubygems'
+require 'optparse'
 require 'smusher'
 
-path = ARGV[0]
-if ARGV.length != 1 or not File.exist?(path)
-  puts "smusher DIRECTORY_OR_FILE_TO_OPTIMIZE"
-  puts "smusher /apps/x/public/images"
-  exit
+options = {}
+path = ARGV.shift
+OptionParser.new do |opts|
+  opts.banner = <<BANNER
+Optimize a single image or a whole folder in the cloud.
+
+gif`s:
+ - called with a folder gif`s will not be optimized
+ - called on a singe .gif, it will be optimized if it is optimizeable
+
+Usage:
+    smusher /apps/x/public/images [options]
+    smusher /apps/x/public/images/x.png [options]
+
+Options are:
+BANNER
+  opts.on("-q", "--quiet","no output") { options[:quiet]=true }
+  opts.on("-c", "--convert-gifs","convert all .gif`s in the given folder") { options[:convert_gifs]=true }
+  opts.parse!(ARGV)
+  puts opts if path.to_s.empty? or not File.exist?(path)
 end
 
 if File.directory?(path)
-  Smusher.optimize_images_in_folder(path)
+  Smusher.optimize_images_in_folder(path,options)
 else
-  Smusher.optimize_image(path)
+  Smusher.optimize_image(path,options)
 end
