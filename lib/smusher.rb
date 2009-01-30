@@ -5,17 +5,12 @@ require 'json'
 module Smusher
   extend self
 
+  MINIMUM_IMAGE_SIZE = 20#byte
+
   # optimize the given image !!coverts gif to png!!
   def optimize_image(file)
-    if empty?(file)
-      puts "THIS FILE IS EMPTY!!! #{file}"
-      return
-    end
-    with_protection(file) do
-      with_logging(file) do
-        write_optimized_data(file)
-      end
-    end
+    puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
+    with_logging(file) { write_optimized_data(file) }
   end
 
   # fetch all jpg/png images from  given folder and optimize them
@@ -29,8 +24,13 @@ module Smusher
 private
 
   def write_optimized_data(file)
-    data = optimized_image_data_for(file)
-    File.open(file,'w') {|f| f.puts data} unless data.nil?
+    optimized = optimized_image_data_for(file)
+    
+    raise "cannot be optimized further" if size(file) == optimized.size
+    raise "Error: got larger" if size(file) < optimized.size
+    raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
+
+    File.open(file,'w') {|f| f.puts optimized}
   end
   
   def sanitize_folder(folder)
@@ -43,27 +43,8 @@ private
     FileList[*images]
   end
   
-  def with_protection(file)
-    backup = "#{file}.backup"
-    FileUtils.cp(file,backup)
-
-    before = size(file)
-    yield
-
-    if empty?(file) or size(file) >= before
-      FileUtils.mv(backup,file,:force=>true)#revert
-      puts "reverted!"
-    else
-      FileUtils.rm(backup)
-    end
-  end
-  
   def size(file)
     File.exist?(file) ? File.size(file) : 0
-  end
-
-  def empty?(file)
-    size(file) <= 4 #empty file = 4kb
   end
 
   def with_logging(file)

@@ -22,6 +22,27 @@ describe :smusher do
       Smusher.optimize_image(@file)
       size.should < original_size
     end
+
+    it "it does nothing if size stayed the same" do
+      original_size = size
+      Smusher.expects(:optimized_image_data_for).returns File.read(@file)
+      Smusher.optimize_image(@file)
+      size.should == original_size
+    end
+
+    it "does not save images whoes size got larger" do
+      original_size = size
+      Smusher.expects(:optimized_image_data_for).returns File.read(@file)*2
+      Smusher.optimize_image(@file)
+      size.should == original_size
+    end
+
+    it "does not save images if their size is error-sugesting-small" do
+      original_size = size
+      Smusher.expects(:optimized_image_data_for).returns 'oops...'
+      Smusher.optimize_image(@file)
+      size.should == original_size
+    end
   end
   
   describe :optimize_images_in_folder do
@@ -36,7 +57,7 @@ describe :smusher do
       @before = @files.map {|f|File.size(f)} 
     end
     
-    it "smushes all images" do
+    it "optimizes all images" do
       Smusher.optimize_images_in_folder(@out)
       new_sizes = @files.map {|f|File.size(f)}
       puts new_sizes * ' x '
@@ -64,37 +85,6 @@ describe :smusher do
     
     it "finds nothing if folder is empty" do
       Smusher.send(:images_in_folder,File.join(ROOT,'empty')).should == []
-    end
-  end
-  
-  describe :with_protection do
-    def failure_data 
-      'x' * (Smusher::SMUSHIT_FAILURE_SIZE-1)
-    end
-    
-    def write(data)
-      File.open(@file,'w') {|f|f.puts data}
-    end
-    
-    def copy
-      FileUtils.cp(File.join(ROOT,'images','people.jpg'),@file)
-    end
-    
-    before do
-      @before = size
-      @before.should_not == 0
-    end
-    
-    it "reverts a file that got larger" do
-      Smusher.send(:with_protection,@file) do
-        write(File.open(@file).read + 'x')
-      end
-      @before.should == size
-    end
-    
-    it "reverts a file that got empty" do
-      Smusher.send(:with_protection,@file){write nil}
-      size.should == @before
     end
   end
   
