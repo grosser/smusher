@@ -2,6 +2,10 @@ ROOT = File.expand_path(File.dirname(__FILE__))
 require File.join(ROOT,"spec_helper")
 
 describe :smusher do
+  def copy(image_name)
+    FileUtils.cp(File.join(ROOT,'images',image_name), @out)
+  end
+
   def size
     File.size(@file)
   end
@@ -11,7 +15,7 @@ describe :smusher do
     @out = File.join(ROOT,'out')
     FileUtils.rm_r @out, :force=>true
     FileUtils.mkdir @out
-    FileUtils.cp(File.join(ROOT,'images','people.jpg'), @out)
+    copy 'people.jpg'
     
     @file = File.join(@out,'people.jpg')
   end
@@ -42,6 +46,25 @@ describe :smusher do
       Smusher.expects(:optimized_image_data_for).returns 'oops...'
       Smusher.optimize_image(@file)
       size.should == original_size
+    end
+  
+    describe "gif handling" do
+      before do
+        copy 'logo.gif'
+        @file = File.join(@out,'logo.gif')
+        @file_png = File.join(@out,'logo.png')
+      end
+      it "stores converted .gifs in .png files" do
+        Smusher.optimize_image(@file)
+        File.exist?(@file).should == false
+        File.exist?(@file_png).should == true
+      end
+      it "does not rename gifs, if optimizing failed" do
+        Smusher.expects(:optimized_image_data_for).returns File.read(@file)
+        Smusher.optimize_image(@file)
+        File.exist?(@file).should == true
+        File.exist?(@file_png).should == false
+      end
     end
   end
   

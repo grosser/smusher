@@ -18,13 +18,12 @@ Usage
 =====
     smusher /apps/x/public/images # optimize all jpg/png images, NOT gifs
     smusher /apps/x/public/images/x.png # optimize a single image
-    smusher /apps/x/public/images/x.gif # !!optimize to smaller png, rename it yourself!!
+    smusher /apps/x/public/images/x.gif # optimizes to smaller .png if this reduces size
 
 Protection
 ==========
-Smusher makes .backup copies of any image before optimizing.  
 Any image that returns a failure code, is larger than before,  
-or is empty will be reverted.
+or is empty will not be saved.
 
 Example
 ======

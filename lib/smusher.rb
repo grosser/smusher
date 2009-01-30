@@ -7,10 +7,21 @@ module Smusher
 
   MINIMUM_IMAGE_SIZE = 20#byte
 
-  # optimize the given image !!coverts gif to png!!
+  # optimize the given image
+  # converts gif to png, if size is lower
   def optimize_image(file)
     puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
-    with_logging(file) { write_optimized_data(file) }
+    success = false
+    
+    with_logging(file) do
+      write_optimized_data(file)
+      success = true
+    end
+
+    if success
+      gif = /\.gif$/
+      `mv #{file} #{file.sub(gif,'.png')}` if file =~ gif
+    end
   end
 
   # fetch all jpg/png images from  given folder and optimize them
@@ -26,10 +37,10 @@ private
   def write_optimized_data(file)
     optimized = optimized_image_data_for(file)
     
-    raise "cannot be optimized further" if size(file) == optimized.size
     raise "Error: got larger" if size(file) < optimized.size
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
-
+    raise "cannot be optimized further" if size(file) == optimized.size
+    
     File.open(file,'w') {|f| f.puts optimized}
   end
   
