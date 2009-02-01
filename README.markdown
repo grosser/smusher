@@ -40,13 +40,13 @@ or is empty will not be saved.
 Example
 ======
     smusher /apps/ts/public/images
-      sushing /apps/rs/public/images/social/facebook_icon.png
+      smushing /apps/rs/public/images/social/facebook_icon.png
       2887 -> 132                              = 4%
 
-      sushing /apps/rs/public/images/social/myspace_icon.png
+      smushing /apps/rs/public/images/social/myspace_icon.png
       3136 -> 282                              = 8%
 
-      sushing /apps/rs/public/images/dvd/dvd_1.png
+      smushing /apps/rs/public/images/dvd/dvd_1.png
       5045 -> 4                                = 0%
       reverted!
       ...
