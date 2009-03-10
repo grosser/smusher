@@ -79,7 +79,7 @@ private
 
   def optimized_image_data_for(file)
     #TODO use rest-client --> independent of curl
-    response = JSON.parse(`curl -F files[]=@#{file} http://smush.it/ws.php -s`)
+    response = JSON.parse(`curl -F files[]=@#{file} http://smush.it/ws.php?gifconvert=force -s`)
     raise "smush.it: #{response['error']}" if response['error']
     path = response['dest']
     raise "no dest path found" unless path

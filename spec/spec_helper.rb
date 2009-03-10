@@ -11,15 +11,9 @@ Spec::Runner.configure do |config|
 end
 
 
-# ---- bugfix
-#`exit?': undefined method `run?' for Test::Unit:Module (NoMethodError)
-#can be solved with require test/unit but this will result in extra test-output
-unless defined? Test::Unit
-  module Test
-    module Unit
-      def self.run?
-        true
-      end
-    end
+# ---- Helpers
+def pending_it(text,&block)
+  it text do
+    pending(&block)
   end
 end

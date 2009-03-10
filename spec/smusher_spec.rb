@@ -12,6 +12,7 @@ describe :smusher do
     FileUtils.rm_r @out, :force=>true
     FileUtils.mkdir @out
     FileUtils.cp(File.join(ROOT,'images','people.jpg'), @out)
+    FileUtils.cp(File.join(ROOT,'images','ad.gif'), @out)
     
     @file = File.join(@out,'people.jpg')
   end
@@ -21,6 +22,13 @@ describe :smusher do
       original_size = size
       Smusher.optimize_image(@file)
       size.should < original_size
+    end
+
+    pending_it "converts gifs to png even if they have the same size" do
+      file = File.join(@out,'ad.gif')
+      original_size = size
+      Smusher.optimize_image(file)
+      File.size(File.join(@out,'ad.png')).should == original_size
     end
   end
   
