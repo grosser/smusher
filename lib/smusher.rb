@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'rake'
 require 'json'
+require 'open-uri'
+require 'httpclient'
 
 module Smusher
   extend self
@@ -13,7 +15,7 @@ module Smusher
     check_options(options)
     puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
     success = false
-    
+
     with_logging(file,options[:quiet]) do
       write_optimized_data(file)
       success = true
@@ -44,14 +46,14 @@ private
 
   def write_optimized_data(file)
     optimized = optimized_image_data_for(file)
-    
+
     raise "Error: got larger" if size(file) < optimized.size
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
     raise "cannot be optimized further" if size(file) == optimized.size
-    
+
     File.open(file,'w') {|f| f.puts optimized}
   end
-  
+
   def sanitize_folder(folder)
     folder.sub(%r[/$],'')#remove tailing slash
   end
@@ -63,18 +65,18 @@ private
     images.map! {|ext| "#{folder}/**/*.#{ext}"}
     FileList[*images]
   end
-  
+
   def size(file)
     File.exist?(file) ? File.size(file) : 0
   end
 
   def with_logging(file,quiet)
     puts "smushing #{file}" unless quiet
-    
+
     before = size(file)
     begin; yield; rescue; puts $! unless quiet; end
     after = size(file)
-    
+
     unless quiet
       result = "#{(100*after)/before}%"
       puts "#{before} -> #{after}".ljust(40) + " = #{result}"
@@ -83,11 +85,10 @@ private
   end
 
   def optimized_image_data_for(file)
-    #TODO use rest-client --> independent of curl
-    response = JSON.parse(`curl -F files[]=@#{file} http://smush.it/ws.php -s`)
+    response = JSON.parse((HTTPClient.post 'http://smush.it/ws.php', { 'files[]' => File.new(file) }).body.content)
     raise "smush.it: #{response['error']}" if response['error']
     path = response['dest']
     raise "no dest path found" unless path
-    `curl http://smush.it/#{path} -s`
+    open("http://smush.it/#{path}") { |source| source.read() }
   end
 end

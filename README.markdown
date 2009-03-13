@@ -54,7 +54,6 @@ Example
 TODO
 ====
  - only optimize 'new' images -> save time when doing on each deploy
- - use ruby library rather than curl
  - support `smusher images/*.png` ?
 
 Author
