@@ -9,13 +9,13 @@ end
 #Gemspec
 require 'echoe'
 project_name = 'smusher'
-Echoe.new(project_name , '0.3.2') do |p|
+Echoe.new(project_name , '0.3.4') do |p|
   p.description    = "Automatic Lossless Reduction Of All Your Images"
   p.url            = "http://github.com/grosser/#{project_name}"
   p.author         = "Michael Grosser"
   p.email          = "grosser.michael@gmail.com"
   p.ignore_pattern = ["nbproject/*", "nbproject/*/*"]
-  p.dependencies   = %w[rake json]
+  p.dependencies   = %w[rake json httpclient]
 end
 
 task :update_gemspec => [:manifest, :build_gemspec]

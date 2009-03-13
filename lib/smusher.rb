@@ -1,88 +1,94 @@
 require 'rubygems'
 require 'rake'
 require 'json'
+require 'open-uri'
+require 'httpclient'
 
 module Smusher
   extend self
 
-  # optimize the given image !!coverts gif to png!!
-  def optimize_image(file)
-    if empty?(file)
-      puts "THIS FILE IS EMPTY!!! #{file}"
-      return
+  MINIMUM_IMAGE_SIZE = 20#byte
+
+  # optimize the given image
+  # converts gif to png, if size is lower
+  def optimize_image(file,options={})
+    check_options(options)
+    puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
+    success = false
+
+    with_logging(file,options[:quiet]) do
+      write_optimized_data(file)
+      success = true
     end
-    with_protection(file) do
-      with_logging(file) do
-        write_optimized_data(file)
-      end
+
+    if success
+      gif = /\.gif$/
+      `mv #{file} #{file.sub(gif,'.png')}` if file =~ gif
     end
   end
 
   # fetch all jpg/png images from  given folder and optimize them
-  def optimize_images_in_folder(folder)
-    images_in_folder(folder).each do |file|
+  def optimize_images_in_folder(folder,options={})
+    check_options(options)
+    images_in_folder(folder,options[:convert_gifs]).each do |file|
       optimize_image(file)
-      puts ''
     end
   end
 
 private
 
-  def write_optimized_data(file)
-    data = optimized_image_data_for(file)
-    File.open(file,'w') {|f| f.puts data} unless data.nil?
+  def check_options(options)
+    known_options = [:convert_gifs,:quiet]
+    if options.detect{|k,v| not known_options.include?(k)}
+      raise "Known options: #{known_options*' '}"
+    end
   end
-  
+
+  def write_optimized_data(file)
+    optimized = optimized_image_data_for(file)
+
+    raise "Error: got larger" if size(file) < optimized.size
+    raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
+    raise "cannot be optimized further" if size(file) == optimized.size
+
+    File.open(file,'w') {|f| f.puts optimized}
+  end
+
   def sanitize_folder(folder)
     folder.sub(%r[/$],'')#remove tailing slash
   end
 
-  def images_in_folder(folder)
+  def images_in_folder(folder,with_gifs=false)
     folder = sanitize_folder(folder)
-    images = %w[png jpg jpeg JPG].map {|ext| "#{folder}/**/*.#{ext}"}
+    images = %w[png jpg jpeg JPG]
+    images << 'gif' if with_gifs
+    images.map! {|ext| "#{folder}/**/*.#{ext}"}
     FileList[*images]
   end
-  
-  def with_protection(file)
-    backup = "#{file}.backup"
-    FileUtils.cp(file,backup)
 
-    before = size(file)
-    yield
-
-    if empty?(file) or size(file) >= before
-      FileUtils.mv(backup,file,:force=>true)#revert
-      puts "reverted!"
-    else
-      FileUtils.rm(backup)
-    end
-  end
-  
   def size(file)
     File.exist?(file) ? File.size(file) : 0
   end
 
-  def empty?(file)
-    size(file) <= 4 #empty file = 4kb
-  end
+  def with_logging(file,quiet)
+    puts "smushing #{file}" unless quiet
 
-  def with_logging(file)
-    puts "smushing #{file}"
-    
     before = size(file)
-    begin; yield; rescue; puts $!; end
+    begin; yield; rescue; puts $! unless quiet; end
     after = size(file)
-    
-    result = "#{(100*after)/before}%"
-    puts "#{before} -> #{after}".ljust(40) + " = #{result}"
+
+    unless quiet
+      result = "#{(100*after)/before}%"
+      puts "#{before} -> #{after}".ljust(40) + " = #{result}"
+      puts ''
+    end
   end
 
   def optimized_image_data_for(file)
-    #TODO use rest-client --> independent of curl
-    response = JSON.parse(`curl -F files[]=@#{file} http://smush.it/ws.php?gifconvert=force -s`)
+    response = JSON.parse((HTTPClient.post 'http://smush.it/ws.php', { 'files[]' => File.new(file) }).body.content)
     raise "smush.it: #{response['error']}" if response['error']
     path = response['dest']
     raise "no dest path found" unless path
-    `curl http://smush.it/#{path} -s`
+    open("http://smush.it/#{path}") { |source| source.read() }
   end
 end

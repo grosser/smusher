@@ -7,46 +7,59 @@ Problem
 Solution
 ========
  - *LOSSLESS* size reduction (10-97% size reduction) in the cloud
- - optmizes all images(jpg+png) from a given folder
+ - optmizes all images(jpg+png+[gif]) from a given folder
 
 Install
 =======
-    install ruby + rubygems + curl
+    install ruby + rubygems
+    sudo gem install httpclient
     sudo gem install grosser-smusher --source http://gems.github.com/
 
 Usage
 =====
-    smusher /apps/x/public/images # optimize all jpg/png images, NOT gifs
-    smusher /apps/x/public/images/x.png # optimize a single image
-    smusher /apps/x/public/images/x.gif # !!optimize to smaller png, rename it yourself!!
+Optimize a single image or a whole folder in the cloud.
+
+converting gif-s to png-s:
+
+ - called with a folder gif-s will not be converted
+ - called on a singe .gif, it will be converted if it is optimizeable
+
+Usage:
+    smusher /apps/x/public/images [options]
+    smusher /apps/x/public/images/x.png [options]
+
+Options are:
+    -q, --quiet                      no output
+    -c, --convert-gifs               convert all .gif`s in the given folder
+
 
 Protection
 ==========
-Smusher makes .backup copies of any image before optimizing.  
 Any image that returns a failure code, is larger than before,  
-or is empty will be reverted.
+or is empty will not be saved.
 
 Example
 ======
     smusher /apps/ts/public/images
-      sushing /apps/rs/public/images/social/facebook_icon.png
+      smushing /apps/rs/public/images/social/facebook_icon.png
       2887 -> 132                              = 4%
 
-      sushing /apps/rs/public/images/social/myspace_icon.png
+      smushing /apps/rs/public/images/social/myspace_icon.png
       3136 -> 282                              = 8%
 
-      sushing /apps/rs/public/images/dvd/dvd_1.png
+      smushing /apps/rs/public/images/dvd/dvd_1.png
       5045 -> 4                                = 0%
       reverted!
       ...
 
 TODO
 ====
- - use rest-client rather than curl
- - windows support?
+ - only optimize 'new' images -> save time when doing on each deploy
+ - support wildcars like `smusher images/*.png` ?
+ - convert gifs to png, even if the new size is the same, for consistency (atm only those which get smaller are converted)
 
 Author
 ======
 Michael Grosser  
 grosser.michael@gmail.com  
-Hereby placed under public domain, do what you want, just do not hold me accountable...  
+Hereby placed under public domain, do what you want, just do not hold me accountable...
