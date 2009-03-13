@@ -58,6 +58,10 @@ TODO
  - support wildcars like `smusher images/*.png` ?
  - convert gifs to png, even if the new size is the same, for consistency (atm only those which get smaller are converted)
 
+ALTERNATIVES
+============
+If you want to lossless reduce images and minify css + js, try [reduce](http://github.com/grosser/reduce).
+
 Author
 ======
 Michael Grosser  

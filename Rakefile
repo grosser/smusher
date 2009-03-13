@@ -1,5 +1,5 @@
 desc "Run all specs in spec directory"
-task :test do |t|
+task :default do |t|
   require 'spec'
   options = "--colour --format progress --loadby --reverse"
   files = FileList['spec/**/*_spec.rb']
@@ -7,15 +7,17 @@ task :test do |t|
 end
 
 #Gemspec
-require 'echoe'
-project_name = 'smusher'
-Echoe.new(project_name , '0.3.4') do |p|
-  p.description    = "Automatic Lossless Reduction Of All Your Images"
-  p.url            = "http://github.com/grosser/#{project_name}"
-  p.author         = "Michael Grosser"
-  p.email          = "grosser.michael@gmail.com"
-  p.ignore_pattern = ["nbproject/*", "nbproject/*/*"]
-  p.dependencies   = %w[rake json httpclient]
+begin
+  require 'jeweler'
+  project_name = 'smusher'
+  Jeweler::Tasks.new do |gem|
+    gem.name = project_name
+    gem.summary = "Automatic Lossless Reduction Of All Your Images"
+    gem.email = "grosser.michael@gmail.com"
+    gem.homepage = "http://github.com/grosser/#{project_name}"
+    gem.authors = ["Michael Grosser"]
+    %w[rake json httpclient].each{|d| gem.add_dependency d}
+  end
+rescue LoadError
+  puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
-
-task :update_gemspec => [:manifest, :build_gemspec]
