@@ -27,6 +27,7 @@ converting gif-s to png-s:
 Usage:
     smusher /apps/x/public/images [options]
     smusher /apps/x/public/images/x.png [options]
+    smusher /apps/x/public/images/*.png [options]
 
 Options are:
     -q, --quiet                      no output
