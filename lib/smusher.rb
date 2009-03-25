@@ -11,19 +11,21 @@ module Smusher
 
   # optimize the given image
   # converts gif to png, if size is lower
-  def optimize_image(file,options={})
-    check_options(options)
-    puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
-    success = false
+  def optimize_image(files,options={})
+    files.each do |file|
+      check_options(options)
+      puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
+      success = false
 
-    with_logging(file,options[:quiet]) do
-      write_optimized_data(file)
-      success = true
-    end
+      with_logging(file,options[:quiet]) do
+        write_optimized_data(file)
+        success = true
+      end
 
-    if success
-      gif = /\.gif$/
-      `mv #{file} #{file.sub(gif,'.png')}` if file =~ gif
+      if success
+        gif = /\.gif$/
+        `mv #{file} #{file.sub(gif,'.png')}` if file =~ gif
+      end
     end
   end
 

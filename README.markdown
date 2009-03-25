@@ -55,7 +55,6 @@ Example
 TODO
 ====
  - only optimize 'new' images -> save time when doing on each deploy
- - support wildcars like `smusher images/*.png` ?
  - convert gifs to png, even if the new size is the same, for consistency (atm only those which get smaller are converted)
 
 ALTERNATIVES
