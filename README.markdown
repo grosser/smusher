@@ -22,7 +22,7 @@ Optimize a single image or a whole folder in the cloud.
 converting gif-s to png-s:
 
  - called with a folder gif-s will not be converted
- - called on a single .gif or wildcard, it will be converted if it is optimizeable
+ - called on a single .gif or wildcard, image(s) will be converted if optimizeable
 
 Usage:
     smusher /apps/x/public/images [options]
