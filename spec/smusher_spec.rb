@@ -28,6 +28,12 @@ describe :smusher do
       size.should < original_size
     end
 
+    it "can be called with an array of files" do
+      original_size = size
+      Smusher.optimize_image([@file])
+      size.should < original_size
+    end
+
     it "it does nothing if size stayed the same" do
       original_size = size
       Smusher.expects(:optimized_image_data_for).returns File.read(@file)

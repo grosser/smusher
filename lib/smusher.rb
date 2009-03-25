@@ -11,6 +11,7 @@ module Smusher
 
   # optimize the given image
   # converts gif to png, if size is lower
+  # can be called with a file-path or an array of files-paths
   def optimize_image(files,options={})
     files.each do |file|
       check_options(options)

@@ -62,8 +62,11 @@ ALTERNATIVES
 ============
 If you want to lossless reduce images and minify css + js, try [reduce](http://github.com/grosser/reduce).
 
-Author
+Authors
 ======
-Michael Grosser
-grosser.michael@gmail.com
+###Contributors
+ - [retr0h](http://geminstallthat.wordpress.com/)
+
+[Michael Grosser](http://pragmatig.wordpress.com)  
+grosser.michael@gmail.com  
 Hereby placed under public domain, do what you want, just do not hold me accountable...
