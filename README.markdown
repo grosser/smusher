@@ -22,7 +22,7 @@ Optimize a single image or a whole folder in the cloud.
 converting gif-s to png-s:
 
  - called with a folder gif-s will not be converted
- - called on a singe .gif, it will be converted if it is optimizeable
+ - called on a singe .gif or wildcard, it will be converted if it is optimizeable
 
 Usage:
     smusher /apps/x/public/images [options]
@@ -36,7 +36,7 @@ Options are:
 
 Protection
 ==========
-Any image that returns a failure code, is larger than before,  
+Any image that returns a failure code, is larger than before,
 or is empty will not be saved.
 
 Example
@@ -64,6 +64,6 @@ If you want to lossless reduce images and minify css + js, try [reduce](http://g
 
 Author
 ======
-Michael Grosser  
-grosser.michael@gmail.com  
+Michael Grosser
+grosser.michael@gmail.com
 Hereby placed under public domain, do what you want, just do not hold me accountable...
