@@ -49,6 +49,7 @@ private
 
   def write_optimized_data(file)
     optimized = optimized_image_data_for(file)
+    puts optimized
 
     raise "Error: got larger" if size(file) < optimized.size
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
@@ -88,10 +89,17 @@ private
   end
 
   def optimized_image_data_for(file)
-    response = JSON.parse((HTTPClient.post 'http://smush.it/ws.php', { 'files[]' => File.new(file) }).body.content)
+    #I leave these urls here, just in case it stops working again...
+#    url = "http://smush.it/ws.php" # original, redirects to somewhere else..
+    url = 'http://ws1.adq.ac4.yahoo.com/ysmush.it/ws.php'
+#    url = "http://developer.yahoo.com/yslow/smushit/ws.php" # official but does not work
+#    url = "http://smushit.com/ysmush.it/ws.php" # used at the new page but does not hande uploads
+#    url = "http://smushit.eperf.vip.ac4.yahoo.com/ysmush.it/ws.php" # used at the new page but does not hande uploads
+    response = HTTPClient.post url, { 'files[]' => File.new(file) }
+    response = JSON.parse(response.body.content)
     raise "smush.it: #{response['error']}" if response['error']
-    path = response['dest']
-    raise "no dest path found" unless path
-    open("http://smush.it/#{path}") { |source| source.read() }
+    image_url = response['dest']
+    raise "no dest path found" unless image_url
+    open(image_url) { |source| source.read() }
   end
 end
