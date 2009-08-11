@@ -49,7 +49,6 @@ private
 
   def write_optimized_data(file)
     optimized = optimized_image_data_for(file)
-    puts optimized
 
     raise "Error: got larger" if size(file) < optimized.size
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
