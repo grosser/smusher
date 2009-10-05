@@ -12,8 +12,7 @@ Solution
 Install
 =======
     install ruby + rubygems
-    sudo gem install httpclient
-    sudo gem install grosser-smusher --source http://gems.github.com/
+    sudo gem install httpclient smusher
 
 Usage
 =====
