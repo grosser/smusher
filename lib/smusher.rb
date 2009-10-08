@@ -12,6 +12,8 @@ module Smusher
 
   MINIMUM_IMAGE_SIZE = 20#byte
 
+  VERSION = File.read( File.join(File.dirname(__FILE__),'..','VERSION') ).strip
+
   # optimize the given image
   # converts gif to png, if size is lower
   # can be called with a file-path or an array of files-paths
@@ -44,7 +46,7 @@ module Smusher
     end
   end
 
-private
+  private
 
   def check_options(options)
     known_options = [:convert_gifs, :quiet, :service]

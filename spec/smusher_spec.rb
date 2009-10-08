@@ -166,4 +166,8 @@ describe :smusher do
       val.should == 1
     end
   end
+
+  it "has a VERSION" do
+    Smusher::VERSION.should =~ /^\d+\.\d+\.\d+$/
+  end
 end
