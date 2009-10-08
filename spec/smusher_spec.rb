@@ -35,21 +35,21 @@ describe :smusher do
 
     it "it does nothing if size stayed the same" do
       original_size = size
-      Smusher::SmushIt.expects(:optimized_image_data_for).returns File.read(@file)
+      Smusher::SmushIt.should_receive(:optimized_image_data_for).and_return File.read(@file)
       Smusher.optimize_image(@file)
       size.should == original_size
     end
 
     it "does not save images whoes size got larger" do
       original_size = size
-      Smusher::SmushIt.expects(:optimized_image_data_for).returns File.read(@file)*2
+      Smusher::SmushIt.should_receive(:optimized_image_data_for).and_return File.read(@file)*2
       Smusher.optimize_image(@file)
       size.should == original_size
     end
 
     it "does not save images if their size is error-sugesting-small" do
       original_size = size
-      Smusher::SmushIt.expects(:optimized_image_data_for).returns 'oops...'
+      Smusher::SmushIt.should_receive(:optimized_image_data_for).and_return 'oops...'
       Smusher.optimize_image(@file)
       size.should == original_size
     end
@@ -61,7 +61,8 @@ describe :smusher do
         @file_png = File.join(@out,'logo.png')
       end
 
-      pending_it "converts gifs to png even if they have the same size" do
+      it "converts gifs to png even if they have the same size" do
+        pending
         copy 'ad.gif'
         file = File.join(@out,'ad.gif')
         original_size = size
@@ -76,7 +77,7 @@ describe :smusher do
       end
 
       it "does not rename gifs, if optimizing failed" do
-        Smusher::SmushIt.expects(:optimized_image_data_for).returns File.read(@file)
+        Smusher::SmushIt.should_receive(:optimized_image_data_for).and_return File.read(@file)
         Smusher.optimize_image(@file)
         File.exist?(@file).should == true
         File.exist?(@file_png).should == false
@@ -85,7 +86,7 @@ describe :smusher do
 
     describe 'options' do
       it "does not produce output when :quiet is given" do
-        $stdout.expects(:write).never
+        $stdout.should_receive(:write).never
         Smusher.optimize_image(@file,:quiet=>true)
       end
 
@@ -153,7 +154,7 @@ describe :smusher do
       Smusher.send(:size,@file).should == File.size(@file)
     end
 
-    it "returns 0 for missing file" do
+    it "and_return 0 for missing file" do
       Smusher.send(:size,File.join(ROOT,'xxxx','dssdfsddfs')).should == 0
     end
   end
