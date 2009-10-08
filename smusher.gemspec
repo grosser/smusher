@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{smusher}
-  s.version = "0.3.8"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2009-10-05}
+  s.date = %q{2009-10-08}
   s.default_executable = %q{smusher}
   s.email = %q{grosser.michael@gmail.com}
   s.executables = ["smusher"]
@@ -23,6 +23,9 @@ Gem::Specification.new do |s|
      "VERSION",
      "bin/smusher",
      "lib/smusher.rb",
+     "lib/smusher/puny_png.rb",
+     "lib/smusher/smush_it.rb",
+     "rdoc/README.rdoc",
      "smusher.gemspec",
      "spec/empty/.gitignore",
      "spec/images/ad.gif",
@@ -35,7 +38,10 @@ Gem::Specification.new do |s|
      "spec/out/ad.gif",
      "spec/out/people.jpg",
      "spec/reduced/add.png",
+     "spec/reduced/add_puny.png",
      "spec/reduced/fam.png",
+     "spec/smusher/puny_png_spec.rb",
+     "spec/smusher/smush_it_spec.rb",
      "spec/smusher_spec.rb",
      "spec/spec_helper.rb"
   ]
@@ -46,7 +52,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Automatic Lossless Reduction Of All Your Images}
   s.test_files = [
-    "spec/spec_helper.rb",
+    "spec/smusher/smush_it_spec.rb",
+     "spec/smusher/puny_png_spec.rb",
+     "spec/spec_helper.rb",
      "spec/smusher_spec.rb"
   ]
 
