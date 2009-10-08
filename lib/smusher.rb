@@ -5,6 +5,7 @@ require 'open-uri'
 require 'httpclient'
 
 require 'smusher/smush_it'
+require 'smusher/puny_png'
 
 module Smusher
   extend self
