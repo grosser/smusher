@@ -15,17 +15,20 @@ module Smusher
   # converts gif to png, if size is lower
   # can be called with a file-path or an array of files-paths
   def optimize_image(files,options={})
+    service = options[:service] || 'SmushIt'
+    service = eval(service)
+
     files.each do |file|
       check_options(options)
       puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
       success = false
 
       with_logging(file,options[:quiet]) do
-        write_optimized_data(file)
+        write_optimized_data(file, service)
         success = true
       end
 
-      if success
+      if success and service.converts_gif_to_png?
         gif = /\.gif$/
         `mv #{file} #{file.sub(gif,'.png')}` if file =~ gif
       end
@@ -33,24 +36,24 @@ module Smusher
   end
 
   # fetch all jpg/png images from  given folder and optimize them
-  def optimize_images_in_folder(folder,options={})
+  def optimize_images_in_folder(folder, options={})
     check_options(options)
-    images_in_folder(folder,options[:convert_gifs]).each do |file|
-      optimize_image(file)
+    images_in_folder(folder, options[:convert_gifs]).each do |file|
+      optimize_image(file, options)
     end
   end
 
 private
 
   def check_options(options)
-    known_options = [:convert_gifs,:quiet]
+    known_options = [:convert_gifs, :quiet, :service]
     if options.detect{|k,v| not known_options.include?(k)}
       raise "Known options: #{known_options*' '}"
     end
   end
 
-  def write_optimized_data(file)
-    optimized = SmushIt.optimized_image_data_for(file)
+  def write_optimized_data(file, service)
+    optimized = service.optimized_image_data_for(file)
 
     raise "Error: got larger" if size(file) < optimized.size
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE

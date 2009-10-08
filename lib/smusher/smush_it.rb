@@ -1,5 +1,9 @@
 module Smusher
   class SmushIt
+    def self.converts_gif_to_png?
+      true
+    end
+
     def self.optimized_image_data_for(file)
       #I leave these urls here, just in case it stops working again...
       # url = "http://smush.it/ws.php" # original, redirects to somewhere else..
