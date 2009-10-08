@@ -12,7 +12,7 @@ Solution
 Install
 =======
     install ruby + rubygems
-    sudo gem install httpclient smusher
+    sudo gem install smusher
 
 Usage
 =====
@@ -31,6 +31,7 @@ Usage:
 Options are:
     -q, --quiet                      no output
     -c, --convert-gifs               convert all .gif`s in the given folder
+    --service PunyPng                use PunyPng for image optimizing, instead of SmushIt
 
 
 Protection

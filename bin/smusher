@@ -19,6 +19,7 @@ Usage:
 Options are:
 BANNER
   opts.on("-q", "--quiet","no output") { options[:quiet]=true }
+  opts.on("--service S", String, "use service: PunyPng or default SmushIt") {|x| options[:service]=x }
   opts.on("-c", "--convert-gifs","convert all .gif`s in the given folder") { options[:convert_gifs]=true }
   opts.on("-h", "--help","Show this.") { puts opts;exit }
 end.parse!
