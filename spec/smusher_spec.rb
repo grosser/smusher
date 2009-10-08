@@ -1,5 +1,4 @@
-ROOT = File.expand_path(File.dirname(__FILE__))
-require File.join(ROOT,"spec_helper")
+require 'spec/spec_helper'
 
 describe :smusher do
   def copy(image_name)
@@ -36,21 +35,21 @@ describe :smusher do
 
     it "it does nothing if size stayed the same" do
       original_size = size
-      Smusher.expects(:optimized_image_data_for).returns File.read(@file)
+      Smusher::SmushIt.expects(:optimized_image_data_for).returns File.read(@file)
       Smusher.optimize_image(@file)
       size.should == original_size
     end
 
     it "does not save images whoes size got larger" do
       original_size = size
-      Smusher.expects(:optimized_image_data_for).returns File.read(@file)*2
+      Smusher::SmushIt.expects(:optimized_image_data_for).returns File.read(@file)*2
       Smusher.optimize_image(@file)
       size.should == original_size
     end
 
     it "does not save images if their size is error-sugesting-small" do
       original_size = size
-      Smusher.expects(:optimized_image_data_for).returns 'oops...'
+      Smusher::SmushIt.expects(:optimized_image_data_for).returns 'oops...'
       Smusher.optimize_image(@file)
       size.should == original_size
     end
@@ -77,7 +76,7 @@ describe :smusher do
       end
 
       it "does not rename gifs, if optimizing failed" do
-        Smusher.expects(:optimized_image_data_for).returns File.read(@file)
+        Smusher::SmushIt.expects(:optimized_image_data_for).returns File.read(@file)
         Smusher.optimize_image(@file)
         File.exist?(@file).should == true
         File.exist?(@file_png).should == false
@@ -164,15 +163,6 @@ describe :smusher do
       val = 0
       Smusher.send(:with_logging,@file,false) {val = 1}
       val.should == 1
-    end
-  end
-
-  describe :optimized_image_data_for do
-    it "loads the reduced image" do
-      original = File.join(ROOT,'images','add.png')
-      reduced = File.open(File.join(ROOT,'reduced','add.png')).read
-      received = (Smusher.send(:optimized_image_data_for,original))
-      received.should == reduced
     end
   end
 end

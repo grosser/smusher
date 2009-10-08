@@ -2,8 +2,11 @@
 require 'rubygems'
 require 'spec'
 require 'mocha'
-require 'lib/smusher'
 
+$LOAD_PATH << 'lib'
+require 'smusher'
+
+ROOT = File.expand_path(File.dirname(__FILE__))
 
 # ---- rspec
 Spec::Runner.configure do |config|
