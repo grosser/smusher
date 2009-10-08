@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'optparse'
+require 'smusher'
 
 options = {}
 OptionParser.new do |opts|
@@ -21,7 +22,8 @@ BANNER
   opts.on("-q", "--quiet","no output") { options[:quiet]=true }
   opts.on("--service S", String, "use service: PunyPng or default SmushIt") {|x| options[:service]=x }
   opts.on("-c", "--convert-gifs","convert all .gif`s in the given folder") { options[:convert_gifs]=true }
-  opts.on("-h", "--help","Show this.") { puts opts;exit }
+  opts.on("-h", "--help","Show this.") { puts opts; exit }
+  opts.on('-v', '--version','Show Version'){ puts Smusher::VERSION; exit}
 end.parse!
 
 path = ARGV.first
@@ -30,7 +32,6 @@ if path.to_s.empty? or not File.exist?(path)
   exit
 end
 
-require 'smusher'
 if File.directory?(path)
   Smusher.optimize_images_in_folder(path,options)
 else

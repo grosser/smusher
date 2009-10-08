@@ -32,6 +32,7 @@ Options are:
     -q, --quiet                      no output
     -c, --convert-gifs               convert all .gif`s in the given folder
     --service PunyPng                use PunyPng for image optimizing, instead of SmushIt
+    -v, --version                    display current version
 
 
 Protection
