@@ -1,13 +1,7 @@
-Problem
-=======
- - Images are too large because they are not optimized
- - Users & your bandwidth is wasted for useless metadata
- - local image optimization requires tons of programs / libaries / knowledge
+*LOSSLESS* image size reduction for jpg, png and gif in the cloud
 
-Solution
-========
- - *LOSSLESS* size reduction (10-97% size reduction) in the cloud
- - optmizes all images(jpg+png+[gif]) from a given folder
+ - no image libraries needed, everything done in the interwebs
+ - less size (up 97% saving) = faster downloads = less bandwidth + happy users 
 
 Install
 =======
@@ -16,29 +10,17 @@ Install
 
 Usage
 =====
-Optimize a single image or a whole folder in the cloud.
+Optimize a single image or a whole folder:
 
-converting gif-s to png-s:
-
- - called with a folder gif-s will not be converted
- - called on a single .gif or wildcard, image(s) will be converted if optimizeable
-
-Usage:
     smusher /apps/x/public/images [options]
     smusher /apps/x/public/images/x.png [options]
     smusher /apps/x/public/images/*.png [options]
 
-Options are:
+Options:
     -q, --quiet                      no output
-    -c, --convert-gifs               convert all .gif`s in the given folder
+    -c, --convert-gifs               convert gifs to PNGs
     --service PunyPng                use PunyPng for image optimizing, instead of SmushIt
     -v, --version                    display current version
-
-
-Protection
-==========
-Any image that returns a failure code, is larger than before,
-or is empty will not be saved.
 
 Example
 ======
@@ -54,14 +36,18 @@ Example
       reverted!
       ...
 
+Protection
+==========
+Any image that returns a failure code, is larger than before,
+or is empty will not be saved.
+
 TODO
 ====
- - only optimize 'new' images -> save time when doing on each deploy
- - convert gifs to png, even if the new size is the same, for consistency (atm only those which get smaller are converted)
+ - only optimize 'new' images -> save time when doing on already optimized folder
 
-ALTERNATIVES
+JS + CSS
 ============
-If you want to lossless reduce images and minify css + js, try [reduce](http://github.com/grosser/reduce).
+reduce images and minify css + js -> try [reduce](http://github.com/grosser/reduce).
 
 Authors
 ======

@@ -8,16 +8,12 @@ OptionParser.new do |opts|
   opts.banner = <<BANNER
 Optimize a single image or a whole folder in the cloud.
 
-gif`s:
- - called with a folder gif`s will not be optimized
- - called on a singe .gif, it will be optimized if it is optimizeable
-
 Usage:
     smusher /apps/x/public/images [options]
     smusher /apps/x/public/images/x.png [options]
     smusher /apps/x/public/images/*.png [options]
 
-Options are:
+Options:
 BANNER
   opts.on("-q", "--quiet","no output") { options[:quiet]=true }
   opts.on("--service S", String, "use service: PunyPng or default SmushIt") {|x| options[:service]=x }
@@ -28,7 +24,7 @@ end.parse!
 
 path = ARGV.first
 if path.to_s.empty? or not File.exist?(path)
-  puts "Usage instructions: autotest --help"
+  puts "Usage instructions: smusher --help"
   exit
 end
 
