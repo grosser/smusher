@@ -62,7 +62,7 @@ module Smusher
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
     raise "cannot be optimized further" if size(file) == optimized.size
 
-    File.open(file,'w') {|f| f.puts optimized}
+    File.open(file,'w') {|f| f.write optimized}
   end
 
   def sanitize_folder(folder)

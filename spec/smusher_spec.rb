@@ -27,6 +27,14 @@ describe :smusher do
       size.should < original_size
     end
 
+    it "does not append newline" do
+      copy 'add.png'
+      file = File.join(@out, 'add.png')
+      Smusher.optimize_image file
+      # pure File.read() will omit trailing \n
+      File.readlines(file).last.split('').last.should_not == "\n" 
+    end
+
     it "can be called with an array of files" do
       original_size = size
       Smusher.optimize_image([@file])
