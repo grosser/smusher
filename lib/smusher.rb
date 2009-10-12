@@ -21,7 +21,7 @@ module Smusher
     service = options[:service] || 'SmushIt'
     service = eval(service)
 
-    files.each do |file|
+    Array(files).each do |file|
       check_options(options)
       puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
       success = false
