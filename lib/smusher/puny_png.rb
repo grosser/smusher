@@ -1,12 +1,16 @@
 module Smusher
   class PunyPng
+    @@api_key = '3cbb0102ca6d000370f2d5b34ca0125d67b801dc'
+    def self.api_key=(x); @@api_key = x; end
+    def self.api_key; @@api_key; end
+
     def self.converts_gif_to_png?
       false
     end
 
     def self.optimized_image_data_for(file)
-      url = 'http://www.gracepointafterfive.com/punypng_staging/api/optimize'
-      response = HTTPClient.post url, { 'img' => File.new(file), 'key' => 'd1b72ab4813da6b69e1d6018303ac690c014599d'}
+      url = 'http://www.gracepointafterfive.com/punypng/api/optimize'
+      response = HTTPClient.post url, { 'img' => File.new(file), 'key' => api_key}
       response = JSON.parse(response.body.content)
       raise "puny_png: #{response['error']}" if response['error']
       image_url = response['optimized_url']
