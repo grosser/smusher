@@ -1,8 +1,12 @@
 module Smusher
   class PunyPng
-    @@api_key = '3cbb0102ca6d000370f2d5b34ca0125d67b801dc'
+    DEFAULT_API_KEY = '97b8b70fc59768979e2a0bdaf19df4dfa5536ed4'
+
+    @@api_key = nil
     def self.api_key=(x); @@api_key = x; end
-    def self.api_key; @@api_key; end
+    def self.api_key
+      @@api_key ||= (personal_key || DEFAULT_API_KEY)
+    end
 
     def self.converts_gif_to_png?
       false
@@ -16,6 +20,13 @@ module Smusher
       image_url = response['optimized_url']
       raise "no optimized_url found" unless image_url
       open(image_url) { |source| source.read() }
+    end
+
+    private
+
+    def self.personal_key
+      key = `cat ~/.puny_png_api_key`.strip
+      key.empty? ? nil : key
     end
   end
 end

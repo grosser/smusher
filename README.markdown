@@ -36,6 +36,13 @@ Example
       reverted!
       ...
 
+### PunyPng - usage limit
+The default `Smusher::PunyPng.api_key` is used by all users and
+could already be full when you try to smush some images.
+
+Create a .puny_png_api_key in your home directory with your own
+api key from [PunyPng](http://www.gracepointafterfive.com/punypng).
+
 Protection
 ==========
 Any image that returns a failure code, is larger than before,
