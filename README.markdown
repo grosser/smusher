@@ -59,6 +59,7 @@ reduce images and minify css + js -> try [reduce](http://github.com/grosser/redu
 Authors
 ======
 ###Contributors
+ - [ahaller](http://ahax.de/)
  - [retr0h](http://geminstallthat.wordpress.com/)
 
 [Michael Grosser](http://pragmatig.wordpress.com)  
