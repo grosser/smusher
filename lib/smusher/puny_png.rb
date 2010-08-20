@@ -13,7 +13,7 @@ module Smusher
     end
 
     def self.optimized_image_data_for(file)
-      url = 'http://www.gracepointafterfive.com/punypng/api/optimize'
+      url = 'http://www.punypng.com/api/optimize'
       response = HTTPClient.post url, { 'img' => File.new(file), 'key' => api_key}
       response = JSON.parse(response.body.content)
       raise "puny_png: #{response['error']}" if response['error']
