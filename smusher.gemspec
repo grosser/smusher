@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{smusher}
-  s.version = "0.4.4"
+  s.version = "0.4.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2010-03-23}
+  s.date = %q{2010-08-20}
   s.default_executable = %q{smusher}
   s.email = %q{grosser.michael@gmail.com}
   s.executables = ["smusher"]
@@ -50,10 +50,10 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Automatic Lossless Reduction Of All Your Images}
   s.test_files = [
-    "spec/spec_helper.rb",
+    "spec/smusher/puny_png_spec.rb",
+     "spec/smusher/smush_it_spec.rb",
      "spec/smusher_spec.rb",
-     "spec/smusher/puny_png_spec.rb",
-     "spec/smusher/smush_it_spec.rb"
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
