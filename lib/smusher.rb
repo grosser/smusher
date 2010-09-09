@@ -24,16 +24,9 @@ module Smusher
     Array(files).each do |file|
       check_options(options)
       puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
-      success = false
 
       with_logging(file,options[:quiet]) do
         write_optimized_data(file, service)
-        success = true
-      end
-
-      if success and service.converts_gif_to_png?
-        gif = /\.gif$/
-        `mv #{file} #{file.sub(gif,'.png')}` if file =~ gif
       end
     end
   end
@@ -63,6 +56,10 @@ module Smusher
     raise "cannot be optimized further" if size(file) == optimized.size
 
     File.open(file,'wb') {|f| f.write optimized}
+
+    if service.converts_gif_to_png? && File.extname(file) == ".gif" && optimized[0..2] != "GIF"
+      `mv #{file} #{file.sub(/.gif$/, '.png')}`
+    end
   end
 
   def sanitize_folder(folder)
