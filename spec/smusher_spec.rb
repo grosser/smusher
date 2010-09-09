@@ -32,7 +32,7 @@ describe :smusher do
       file = File.join(@out, 'add.png')
       Smusher.optimize_image file
       # pure File.read() will omit trailing \n
-      File.readlines(file).last.split('').last.should_not == "\n" 
+      File.readlines(file).last[-1].should_not == "\n"
     end
 
     it "can be called with an array of files" do
