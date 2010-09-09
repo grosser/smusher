@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Smusher::SmushIt do
   describe :optimized_image_data_for do
