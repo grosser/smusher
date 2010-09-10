@@ -5,21 +5,18 @@
 
 Gem::Specification.new do |s|
   s.name = %q{smusher}
-  s.version = "0.4.5"
+  s.version = "0.4.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2010-08-20}
+  s.date = %q{2010-09-10}
   s.default_executable = %q{smusher}
   s.email = %q{grosser.michael@gmail.com}
   s.executables = ["smusher"]
-  s.extra_rdoc_files = [
-    "README.markdown"
-  ]
   s.files = [
     ".gitignore",
-     "README.markdown",
      "Rakefile",
+     "Readme.md",
      "VERSION",
      "bin/smusher",
      "lib/smusher.rb",
