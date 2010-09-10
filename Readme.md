@@ -61,6 +61,7 @@ Authors
 ###Contributors
  - [ahaller](http://ahax.de/)
  - [retr0h](http://geminstallthat.wordpress.com/)
+ - [Nate Pickens](http://github.com/npickens)
 
 [Michael Grosser](http://pragmatig.wordpress.com)  
 grosser.michael@gmail.com  
