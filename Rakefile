@@ -1,17 +1,15 @@
-task :default => :spec
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new {|t| t.spec_opts = ['--color']}
+task :default do
+  sh "rspec spec/"
+end
 
 begin
   require 'jeweler'
-  project_name = 'smusher'
   Jeweler::Tasks.new do |gem|
-    gem.name = project_name
+    gem.name = 'smusher'
     gem.summary = "Automatic Lossless Reduction Of All Your Images"
-    gem.email = "grosser.michael@gmail.com"
-    gem.homepage = "http://github.com/grosser/#{project_name}"
+    gem.email = "michael@grosser.it"
+    gem.homepage = "http://github.com/grosser/#{gem.name}"
     gem.authors = ["Michael Grosser"]
-    %w[rake json httpclient].each{|d| gem.add_dependency d}
   end
 
   Jeweler::GemcutterTasks.new
