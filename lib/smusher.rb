@@ -78,14 +78,16 @@ module Smusher
     File.exist?(file) ? File.size(file) : 0
   end
 
-  def with_logging(file,quiet)
-    puts "smushing #{file}" unless quiet
+  def with_logging(file, quiet)
+    if quiet
+      yield rescue nil
+    else
+      puts "smushing #{file}"
 
-    before = size(file)
-    begin; yield; rescue; puts $! unless quiet; end
-    after = size(file)
+      before = size(file)
+      yield rescue puts($!)
+      after = size(file)
 
-    unless quiet
       result = "#{(100*after)/before}%"
       puts "#{before} -> #{after}".ljust(40) + " = #{result}"
       puts ''
