@@ -170,7 +170,7 @@ describe :smusher do
   describe :logging do
     it "yields" do
       val = 0
-      Smusher.send(:with_logging,@file,false) {val = 1}
+      Smusher.send(:with_logging, @file, false) {val = 1; @file}
       val.should == 1
     end
   end

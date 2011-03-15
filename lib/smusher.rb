@@ -25,7 +25,7 @@ module Smusher
       check_options(options)
       puts "THIS FILE IS EMPTY!!! #{file}" and return if size(file).zero?
 
-      with_logging(file,options[:quiet]) do
+      with_logging(file, options[:quiet]) do
         write_optimized_data(file, service)
       end
     end
@@ -43,7 +43,7 @@ module Smusher
 
   def check_options(options)
     known_options = [:convert_gifs, :quiet, :service]
-    if options.detect{|k,v| not known_options.include?(k)}
+    if options.detect{|k,_| not known_options.include?(k)}
       raise "Known options: #{known_options*' '}"
     end
   end
@@ -55,22 +55,26 @@ module Smusher
     raise "Error: empty file downloaded" if optimized.size < MINIMUM_IMAGE_SIZE
     raise "cannot be optimized further" if size(file) == optimized.size
 
-    File.open(file,'wb') {|f| f.write optimized}
+    File.open(file,'wb') {|f| f.write optimized }
 
     if service.converts_gif_to_png? && File.extname(file) == ".gif" && optimized[0..2] != "GIF"
-      `mv #{file} #{file.sub(/.gif$/, '.png')}`
+      result_file = file.sub(/\.gif$/, '.png')
+      `mv #{file} #{result_file}`
+      result_file
+    else
+      file
     end
   end
 
   def sanitize_folder(folder)
-    folder.sub(%r[/$],'')#remove tailing slash
+    folder.sub(%r[/$],'') # remove tailing slash
   end
 
-  def images_in_folder(folder,with_gifs=false)
+  def images_in_folder(folder, with_gifs=false)
     folder = sanitize_folder(folder)
     images = %w[png jpg jpeg JPG]
     images << 'gif' if with_gifs
-    images.map! {|ext| "#{folder}/**/*.#{ext}"}
+    images.map! {|ext| "#{folder}/**/*.#{ext}" }
     FileList[*images]
   end
 
@@ -85,9 +89,17 @@ module Smusher
       puts "smushing #{file}"
 
       before = size(file)
-      yield rescue puts($!)
-      after = size(file)
 
+      # notify user about changed file
+      begin
+        result_file = yield
+        puts "--> #{result_file}" if file != result_file
+        file = result_file
+      rescue
+        puts $!
+      end
+
+      after = size(file)
       result = "#{(100*after)/before}%"
       puts "#{before} -> #{after}".ljust(40) + " = #{result}"
       puts ''
