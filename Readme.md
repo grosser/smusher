@@ -1,7 +1,7 @@
 *LOSSLESS* image size reduction for jpg, png and gif in the cloud
 
  - no image libraries needed, everything done in the interwebs
- - less size (up 97% saving) = faster downloads = less bandwidth + happy users 
+ - less size (up 97% saving) = faster downloads = less bandwidth + happy users
 
 Install
 =======
@@ -58,11 +58,11 @@ reduce images and minify css + js -> try [reduce](http://github.com/grosser/redu
 
 Authors
 ======
-###Contributors
+### [Contributors](http://github.com/grosser/smusher/contributors)
  - [ahaller](http://ahax.de/)
  - [retr0h](http://geminstallthat.wordpress.com/)
  - [Nate Pickens](http://github.com/npickens)
 
-[Michael Grosser](http://pragmatig.wordpress.com)  
-grosser.michael@gmail.com  
+[Michael Grosser](http://grosser.it)<br/>
+michael@grosser.it<br/>
 Hereby placed under public domain, do what you want, just do not hold me accountable...
