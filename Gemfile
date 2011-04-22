@@ -2,7 +2,7 @@ source :rubygems
 
 gem 'rake'
 gem 'json'
-gem 'httpclient'
+gem 'httpclient', '>=2.2'
 
 group :dev do
   gem 'rake'

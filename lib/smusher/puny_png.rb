@@ -15,7 +15,7 @@ module Smusher
     def self.optimized_image_data_for(file)
       url = 'http://www.punypng.com/api/optimize'
       response = HTTPClient.post url, { 'img' => File.new(file), 'key' => api_key}
-      response = JSON.parse(response.body.content)
+      response = JSON.parse(response.body)
       raise "puny_png: #{response['error']}" if response['error']
       image_url = response['optimized_url']
       raise "no optimized_url found" unless image_url

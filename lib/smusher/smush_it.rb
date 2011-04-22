@@ -12,7 +12,7 @@ module Smusher
       # url = "http://smushit.eperf.vip.ac4.yahoo.com/ysmush.it/ws.php" # used at the new page but does not hande uploads
         url = 'http://ws1.adq.ac4.yahoo.com/ysmush.it/ws.php'
       response = HTTPClient.post url, { 'files[]' => File.new(file)}
-      response = JSON.parse(response.body.content)
+      response = JSON.parse(response.body)
       raise "smush.it: #{response['error']}" if response['error']
       image_url = response['dest']
       raise "no dest path found" unless image_url
