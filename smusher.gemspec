@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{smusher}
-  s.version = "0.4.7"
+  s.version = "0.4.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2011-03-15}
+  s.date = %q{2011-04-22}
   s.default_executable = %q{smusher}
   s.email = %q{michael@grosser.it}
   s.executables = ["smusher"]
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/grosser/smusher}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.4.2}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{Automatic Lossless Reduction Of All Your Images}
   s.test_files = [
     "spec/smusher/puny_png_spec.rb",
@@ -59,16 +59,16 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rake>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
-      s.add_runtime_dependency(%q<httpclient>, [">= 0"])
+      s.add_runtime_dependency(%q<httpclient>, [">= 2.2"])
     else
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
-      s.add_dependency(%q<httpclient>, [">= 0"])
+      s.add_dependency(%q<httpclient>, [">= 2.2"])
     end
   else
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
-    s.add_dependency(%q<httpclient>, [">= 0"])
+    s.add_dependency(%q<httpclient>, [">= 2.2"])
   end
 end
 
