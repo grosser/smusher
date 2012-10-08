@@ -1,7 +1,7 @@
 *LOSSLESS* image size reduction for jpg, png and gif in the cloud
 
  - no image libraries needed, everything done in the interwebs
- - less size (up 97% saving) = faster downloads = less bandwidth + happy users
+ - less size (up to a 97% saving) = faster downloads = less bandwidth + happy users
 
 Install
 =======
